@@ -66,33 +66,4 @@ const countries = [
   {name:"Tunisia", flag:"🇹🇳", x:480, y:550, color:"#fbbf24"},
   {name:"UAE", flag:"🇦🇪", x:710, y:440, color:"#1e1b4b"},
   {name:"UK", flag:"🇬🇧", x:330, y:180, color:"#10b981"},
-  {name:"USA", flag:"🇺🇸", x:100, y:220, color:"#22c55e"},
-  {name:"Uruguay", flag:"🇺🇾", x:350, y:750, color:"#22c55e"}
-];
-
-// Canvas Setup and Rendering logic for flags and labels
-const canvas = document.getElementById('net');
-if (canvas.getContext) {
-  const ctx = canvas.getContext('2d');
-  
-  // This loop ensures the flags string and country names display together smoothly
-  countries.forEach(country => {
-    // Draw the network node
-    ctx.beginPath();
-    ctx.arc(country.x, country.y, 10, 0, Math.PI * 2, true);
-    ctx.fillStyle = country.color;
-    ctx.fill();
-    
-    // Draw the Country flag + Name label
-    ctx.fillStyle = "#333333"; // text color
-    ctx.font = "14px Arial, sans-serif";
-    ctx.textAlign = "center";
-    
-    // Combines the flag and name (e.g., "🇺🇸 USA") and renders it slightly above the node
-    ctx.fillText(`${country.flag} ${country.name}`, country.x, country.y - 15);
-  });
-}
-
-</script>
-
-</body>
+  {name:"USA", flag:"🇺🇸", x:100, y:220, color:"#22c
