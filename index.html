@@ -8,11 +8,11 @@
         .container { background: #ffffff; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 30px; width: 1100px; }
         
         /* Styled header formatting for the big title */
-        .header { margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
-        .header h1 { font-size: 26px; color: #0f172a; margin: 0 0 5px 0; }
+        .header { margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
+        .header h1 { font-size: 26px; color: #0f172a; margin: 0 0 5px 0; font-weight: 700; }
         .header p { font-size: 15px; color: #64748b; margin: 0; }
 
-        .legend { display: flex; gap: 30px; margin-bottom: 20px; font-size: 16px; color: #334155; padding-bottom: 15px; }
+        .legend { display: flex; gap: 30px; margin-bottom: 20px; font-size: 16px; color: #334155; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
         #tip { 
             display: none; position: fixed; background: white; border: 1px solid #94a3b8; 
             border-radius: 12px; padding: 15px; font-size: 14px; pointer-events: none; 
@@ -126,10 +126,30 @@ function draw() {
         ctx.fillStyle = isH ? "#0f172a" : "#475569";
         ctx.font = isH ? "bold 17px Arial" : "15px Arial";
         ctx.textAlign = "center";
-        
-        // This remains completely intact and draws your flags and country text dynamically
         ctx.fillText(c.flag + " " + c.name, c.x, c.y + r + 24);
     });
 }
 
-canvas.addEventListener('mousemove', (e) =>
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (1050 / rect.width);
+    const my = (e.clientY - rect.top) * (850 / rect.height);
+    let found = -1;
+    countries.forEach((c, i) => {
+        const r = 16 + Math.sqrt(totalSent[i] + totalRecv[i]) * 5;
+        if (Math.hypot(c.x - mx, c.y - my) < r + 15) found = i;
+    });
+    if (found !== hovered) { hovered = found; draw(); }
+    if (found >= 0) {
+        tip.innerHTML = "<strong>" + countries[found].flag + " " + countries[found].name + "</strong><br>" +
+                        "Referrals Sent: <strong>" + totalSent[found] + "</strong><br>" +
+                        "Referrals Received: <strong>" + totalRecv[found] + "</strong>";
+        tip.style.display = 'block'; tip.style.left = (e.clientX + 15) + 'px'; tip.style.top = (e.clientY - 15) + 'px';
+    } else tip.style.display = 'none';
+});
+draw();
+</script>
+</body>
+</html>
+
+```
